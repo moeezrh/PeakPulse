@@ -6,6 +6,10 @@ import smbus			#import SMBus module of I2C
 from time import sleep          #import
 import math
 
+import datetime as dt
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 #some MPU6050 Registers and their Address
 PWR_MGMT_1   = 0x6B
 SMPLRT_DIV   = 0x19
@@ -55,6 +59,36 @@ def calc_linear_acc(Ax, Ay):
     return total
 
 
+# This function is called periodically from FuncAnimation
+def animate(i, xs, ys):
+
+    # Read data from MPU6050
+    temp_c = round(linear_acc)
+
+    # Add x and y to lists
+    xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
+    ys.append(temp_c)
+
+    # Limit x and y lists to 20 items
+    xs = xs[-20:]
+    ys = ys[-20:]
+
+    # Draw x and y lists
+    ax.clear()
+    ax.plot(xs, ys)
+
+    # Format plot
+    plt.xticks(rotation=45, ha='right')
+    plt.subplots_adjust(bottom=0.30)
+    plt.title('TMP102 Temperature over Time')
+    plt.ylabel('Temperature (deg C)')
+
+# Create figure for plotting
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+xs = []
+ys = []
+
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 Device_Address = 0x68   # MPU6050 device address
 
@@ -83,7 +117,11 @@ while True:
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
 	
-	calc_linear_acc(Ax, Ay)
+	linear_acc = calc_linear_acc(Ax, Ay)
+
+	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=1000)
+	plt.show()
+
 
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
 	print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
