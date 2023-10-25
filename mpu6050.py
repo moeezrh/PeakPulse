@@ -63,7 +63,7 @@ def calc_linear_acc(Ax, Ay):
 def animate(i, xs, ys):
 
     # Read data from MPU6050
-    temp_c = round(linear_acc)
+    temp_c = round(calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_YOUT_H)/16384.0))
 
     # Add x and y to lists
     xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
@@ -116,8 +116,6 @@ while True:
 #	Gx = gyro_x/131.0
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
-	
-	linear_acc = calc_linear_acc(Ax, Ay)
 
 	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=1000)
 	plt.show()
