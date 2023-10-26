@@ -59,11 +59,11 @@ def read_raw_data(addr):
 def animate(i, xs, ys):
 
     # Read data from MPU6050
-    temp_c = round(calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_YOUT_H)/16384.0))
+    linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_YOUT_H)/16384.0)
 
     # Add x and y to lists
     xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
-    ys.append(temp_c)
+    ys.append(linear_acc_value)
 
     # Limit x and y lists to 20 items
     xs = xs[-20:]
@@ -76,8 +76,8 @@ def animate(i, xs, ys):
     # Format plot
     plt.xticks(rotation=45, ha='right')
     plt.subplots_adjust(bottom=0.30)
-    plt.title('TMP102 Temperature over Time')
-    plt.ylabel('Temperature (deg C)')
+    plt.title('Linear Acceleration over Time')
+    plt.ylabel('Acceleration (g)')
 
 # Create figure for plotting
 fig = plt.figure()
@@ -113,7 +113,7 @@ while True:
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
 
-	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=1000)
+	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=100)
 	plt.show()
 
 
