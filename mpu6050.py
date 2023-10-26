@@ -3,11 +3,11 @@
 	http://www.electronicwings.com
 '''
 import smbus			#import SMBus module of I2C
-from time import sleep          #import
+import time        
+from time import sleep
 import math
 from linear_acc import calc_linear_acc
 
-import datetime as dt
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -56,29 +56,32 @@ def read_raw_data(addr):
 
 
 # This function is called periodically from FuncAnimation
-def animate(i, xs, ys):
+def animate(i, s_time, xs, ys):
 
-    # Read data from MPU6050
-    linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
+        # Read data from MPU6050
+        linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
 
-    # Add x and y to lists
-    xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
-    ys.append(linear_acc_value)
+        # Add x and y to lists
+        
+        xs.append(str(time.time() - s_time))
+        ys.append(linear_acc_value)
 
-    # Limit x and y lists to 20 items
-    xs = xs[-20:]
-    ys = ys[-20:]
+        # Limit x and y lists to 20 items
+        # xs = xs[-20:]
+        # ys = ys[-20:]
 
-    # Draw x and y lists
-    ax.clear()
-    ax.plot(xs, ys)
-    ax.set_ylim(0, 5)
+        # Draw x and y lists
+        ax.clear()
+        ax.plot(xs, ys)
+        ax.set_ylim(0, 5)
 
-    # Format plot
-    plt.xticks(rotation=45, ha='right')
-    plt.subplots_adjust(bottom=0.30)
-    plt.title('Linear Acceleration over Time')
-    plt.ylabel('Acceleration (g)')
+        # Format plot
+        plt.xticks(rotation=45, ha='right')
+        step = 5
+        ax.set_xticks(x[::step])
+        plt.subplots_adjust(bottom=0.30)
+        plt.title('Linear Acceleration over Time')
+        plt.ylabel('Acceleration (g)')
 
 # Create figure for plotting
 fig = plt.figure()
@@ -94,30 +97,32 @@ MPU_Init()
 print (" Reading Data of Gyroscope and Accelerometer")
 
 while True:
-	
-	#Read Accelerometer raw value
-	acc_x = read_raw_data(ACCEL_XOUT_H)
-	acc_y = read_raw_data(ACCEL_YOUT_H)
-	acc_z = read_raw_data(ACCEL_ZOUT_H)
-	
-	#Read Gyroscope raw value
-#	gyro_x = read_raw_data(GYRO_XOUT_H)
-#	gyro_y = read_raw_data(GYRO_YOUT_H)
+        
+        #Read Accelerometer raw value
+        acc_x = read_raw_data(ACCEL_XOUT_H)
+        acc_y = read_raw_data(ACCEL_YOUT_H)
+        acc_z = read_raw_data(ACCEL_ZOUT_H)
+        
+        #Read Gyroscope raw value
+        #gyro_x = read_raw_data(GYRO_XOUT_H)
+        #gyro_y = read_raw_data(GYRO_YOUT_H)
 #	gyro_z = read_raw_data(GYRO_ZOUT_H)
-	
-	#Full scale range +/- 250 degree/C as per sensitivity scale factor
-	Ax = acc_x/16384.0
-	Ay = acc_y/16384.0
-	Az = acc_z/16384.0
-	
+        
+        #Full scale range +/- 250 degree/C as per sensitivity scale factor
+        Ax = acc_x/16384.0
+        Ay = acc_y/16384.0
+        Az = acc_z/16384.0
+
+        
 #	Gx = gyro_x/131.0
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
 
-	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=100)
-	plt.show()
+        start_time = time.time()
+        ani = animation.FuncAnimation(fig, animate, fargs=(start_time, xs, ys), interval=100)
+        plt.show()
 
 
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
-	print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
-	sleep(0.01)
+        print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
+        sleep(0.01)
