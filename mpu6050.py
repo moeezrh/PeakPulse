@@ -56,7 +56,7 @@ def read_raw_data(addr):
 
 
 # This function is called periodically from FuncAnimation
-def animate(s_time, xs, ys):
+def animate(i, s_time, xs, ys):
 
     # Read data from MPU6050
     linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
