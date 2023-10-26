@@ -66,8 +66,8 @@ def animate(i, xs, ys):
     ys.append(linear_acc_value)
 
     # Limit x and y lists to 20 items
-    xs = xs[-20:]
-    ys = ys[-20:]
+    # xs = xs[-20:]
+    # ys = ys[-20:]
 
     # Draw x and y lists
     ax.clear()
@@ -114,7 +114,7 @@ while True:
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
 
-	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=100)
+	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=10)
 	plt.show()
 
 
