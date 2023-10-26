@@ -5,6 +5,7 @@
 import smbus			#import SMBus module of I2C
 from time import sleep          #import
 import math
+from linear_acc import calc_linear_acc
 
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -52,11 +53,6 @@ def read_raw_data(addr):
         if(value > 32768):
                 value = value - 65536
         return value
-
-def calc_linear_acc(Ax, Ay):
-    total = math.sqrt(Ax**2 + Ay**2)
-    print("Net acceleration in the x-y plane is ", total)
-    return total
 
 
 # This function is called periodically from FuncAnimation
