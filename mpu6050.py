@@ -3,11 +3,10 @@
 	http://www.electronicwings.com
 '''
 import smbus			#import SMBus module of I2C
-from time import sleep          #import
+from time import sleep, time         #import
 import math
 from linear_acc import calc_linear_acc
 
-import datetime as dt
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -62,7 +61,8 @@ def animate(i, xs, ys):
     linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
 
     # Add x and y to lists
-    xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
+    start_time = time.time()
+    xs.append(str(time.time - start_time))
     ys.append(linear_acc_value)
 
     # Limit x and y lists to 20 items
@@ -114,7 +114,7 @@ while True:
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
 
-	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=10)
+	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=100)
 	plt.show()
 
 
