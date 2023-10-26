@@ -3,7 +3,7 @@
 	http://www.electronicwings.com
 '''
 import smbus			#import SMBus module of I2C
-from time import sleep, time         #import
+import time        #import
 import math
 from linear_acc import calc_linear_acc
 
