@@ -63,7 +63,7 @@ def animate(i, s_time, xs, ys):
 
         # Add x and y to lists
         
-        xs.append(str(time.time() - s_time))
+        xs.append(str(round((time.time() - s_time), 1)))
         ys.append(linear_acc_value)
 
         # Limit x and y lists to 20 items
@@ -77,8 +77,6 @@ def animate(i, s_time, xs, ys):
 
         # Format plot
         plt.xticks(rotation=45, ha='right')
-        step = 5
-        ax.set_xticks(x[::step])
         plt.subplots_adjust(bottom=0.30)
         plt.title('Linear Acceleration over Time')
         plt.ylabel('Acceleration (g)')
