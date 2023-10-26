@@ -3,7 +3,8 @@
 	http://www.electronicwings.com
 '''
 import smbus			#import SMBus module of I2C
-import time        #import
+import time        
+from time import sleep
 import math
 from linear_acc import calc_linear_acc
 
@@ -55,14 +56,14 @@ def read_raw_data(addr):
 
 
 # This function is called periodically from FuncAnimation
-def animate(i, xs, ys):
+def animate(s_time, xs, ys):
 
     # Read data from MPU6050
     linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
 
     # Add x and y to lists
-    start_time = time.time()
-    xs.append(str(time.time() - start_time))
+    
+    xs.append(str(time.time() - s_time))
     ys.append(linear_acc_value)
 
     # Limit x and y lists to 20 items
@@ -94,30 +95,32 @@ MPU_Init()
 print (" Reading Data of Gyroscope and Accelerometer")
 
 while True:
-	
-	#Read Accelerometer raw value
-	acc_x = read_raw_data(ACCEL_XOUT_H)
-	acc_y = read_raw_data(ACCEL_YOUT_H)
-	acc_z = read_raw_data(ACCEL_ZOUT_H)
-	
-	#Read Gyroscope raw value
-#	gyro_x = read_raw_data(GYRO_XOUT_H)
-#	gyro_y = read_raw_data(GYRO_YOUT_H)
+        
+        #Read Accelerometer raw value
+        acc_x = read_raw_data(ACCEL_XOUT_H)
+        acc_y = read_raw_data(ACCEL_YOUT_H)
+        acc_z = read_raw_data(ACCEL_ZOUT_H)
+        
+        #Read Gyroscope raw value
+        #gyro_x = read_raw_data(GYRO_XOUT_H)
+        #gyro_y = read_raw_data(GYRO_YOUT_H)
 #	gyro_z = read_raw_data(GYRO_ZOUT_H)
-	
-	#Full scale range +/- 250 degree/C as per sensitivity scale factor
-	Ax = acc_x/16384.0
-	Ay = acc_y/16384.0
-	Az = acc_z/16384.0
-	
+        
+        #Full scale range +/- 250 degree/C as per sensitivity scale factor
+        Ax = acc_x/16384.0
+        Ay = acc_y/16384.0
+        Az = acc_z/16384.0
+
+        
 #	Gx = gyro_x/131.0
 #	Gy = gyro_y/131.0
 #	Gz = gyro_z/131.0
 
-	ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=100)
-	plt.show()
+        start_time = time.time()
+        ani = animation.FuncAnimation(fig, animate, fargs=(start_time, xs, ys), interval=100)
+        plt.show()
 
 
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
-	print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
-	sleep(0.01)
+        print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
+        sleep(0.01)
