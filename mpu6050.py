@@ -62,7 +62,7 @@ def animate(i, xs, ys):
 
     # Add x and y to lists
     start_time = time.time()
-    xs.append(str(time.time - start_time))
+    xs.append(str(time.time() - start_time))
     ys.append(linear_acc_value)
 
     # Limit x and y lists to 20 items
