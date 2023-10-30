@@ -2,14 +2,16 @@
         Read Gyro and Accelerometer by Interfacing Raspberry Pi with MPU6050 using Python
 	http://www.electronicwings.com
 '''
-import smbus			#import SMBus module of I2C
-import time        
-from time import sleep
-import math
-from linear_acc import calc_linear_acc
+def acc_graph():
+        import smbus			#import SMBus module of I2C
+        import time        
+        from time import sleep
+        import math
+        from linear_acc import calc_linear_acc
 
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+        import threading
+        import matplotlib.pyplot as plt
+        import matplotlib.animation as animation
 
 #some MPU6050 Registers and their Address
 PWR_MGMT_1   = 0x6B
@@ -94,6 +96,21 @@ MPU_Init()
 
 print (" Reading Data of Gyroscope and Accelerometer")
 
+# Flag to control acceleration graph loop
+exit_flag = False
+
+def get_user_input():
+    global exit_flag
+    while True:
+        user_input = input("Type 'stop' to exit: ")
+        if user_input.lower() == "stop":
+            exit_flag = True
+            break
+
+# Start a separate thread to check for user input
+input_thread = threading.Thread(target=get_user_input)
+input_thread.start()
+
 while True:
         
         #Read Accelerometer raw value
@@ -124,3 +141,5 @@ while True:
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
         sleep(0.01)
+if __name__ == "__main__":
+    acc_graph()
