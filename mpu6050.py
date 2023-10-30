@@ -2,16 +2,17 @@
         Read Gyro and Accelerometer by Interfacing Raspberry Pi with MPU6050 using Python
 	http://www.electronicwings.com
 '''
-def acc_graph():
-        import smbus			#import SMBus module of I2C
-        import time        
-        from time import sleep
-        import math
-        from linear_acc import calc_linear_acc
+import smbus			#import SMBus module of I2C
+import time        
+from time import sleep
+import math
+from linear_acc import calc_linear_acc
 
-        import threading
-        import matplotlib.pyplot as plt
-        import matplotlib.animation as animation
+import threading
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+def acc_graph():
+     
 
 #some MPU6050 Registers and their Address
 PWR_MGMT_1   = 0x6B
