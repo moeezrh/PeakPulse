@@ -92,11 +92,6 @@ ys = []
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 Device_Address = 0x68   # MPU6050 device address
-
-MPU_Init()
-
-print (" Reading Data of Gyroscope and Accelerometer")
-
 # Flag to control acceleration graph loop
 exit_flag = False
 
@@ -107,13 +102,19 @@ def get_user_input():
         if user_input.lower() == "stop":
             exit_flag = True
             break
+MPU_Init()
+
+print (" Reading Data of Gyroscope and Accelerometer")
 
 # Start a separate thread to check for user input
 input_thread = threading.Thread(target=get_user_input)
 input_thread.start()
 
 while True:
-        
+        if exit_flag:
+                print("Stopping the loop...")
+        break
+
         #Read Accelerometer raw value
         acc_x = read_raw_data(ACCEL_XOUT_H)
         acc_y = read_raw_data(ACCEL_YOUT_H)
