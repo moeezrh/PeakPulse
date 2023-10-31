@@ -7,6 +7,8 @@ import time
 from time import sleep
 import math
 from linear_acc import calc_linear_acc
+from queue import Queue
+
 
 import threading
 import matplotlib.pyplot as plt
@@ -27,6 +29,7 @@ GYRO_XOUT_H  = 0x43
 GYRO_YOUT_H  = 0x45
 GYRO_ZOUT_H  = 0x47
 
+global end_loop
 
 def MPU_Init():
 	#write to sample rate register
@@ -91,6 +94,13 @@ def start_acc_animation(start_time, xs, ys):
 def stop_animation():
         plt.close()
 
+def check_stop_input():
+        while True:
+                command = input("Enter 'stop' to stop the animation: ")
+                if command.lower() == 'stop':
+                        queue.put("stop")
+                        stop_animation()
+
 
 # def speed_animate(i, s_time, xs, ys):
 
@@ -123,7 +133,7 @@ fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
 xs = []
 ys = []
-end_loop = False
+
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 Device_Address = 0x68   # MPU6050 device address
@@ -134,7 +144,7 @@ MPU_Init()
 print (" Reading Data of Gyroscope and Accelerometer")
 
 
-while end_loop == False:
+while result != "stop":
 
 
         #Read Accelerometer raw value
@@ -159,18 +169,13 @@ while end_loop == False:
 
         start_time = time.time()
 
-        def check_stop_input():
-                while True:
-                        command = input("Enter 'stop' to stop the animation: ")
-                        if command.lower() == 'stop':
-                                end_loop = True
-                                stop_animation()
-                                break
+        q = Queue()
 
         # Thread to check for stop command
-        stop_thread = threading.Thread(target=check_stop_input)
+        stop_thread = threading.Thread(target=check_stop_input, args=(q,))
         stop_thread.start()
 
+        result = q.get()
 
         animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
         animation_thread.start()
