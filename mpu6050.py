@@ -11,8 +11,7 @@ from linear_acc import calc_linear_acc
 import threading
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-def acc_graph():
-     
+
 
 #some MPU6050 Registers and their Address
 PWR_MGMT_1   = 0x6B
