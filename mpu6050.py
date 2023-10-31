@@ -64,11 +64,6 @@ def acc_animate(i, s_time, xs, ys):
         # Read data from MPU6050
         linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
 
-        command = input("Enter 'stop' to stop the animation: ")
-        if command.lower() == 'stop':
-                stop_animation()
-                print("Stopping animation")
-
         # Add x and y to lists
         
         xs.append(str(round((time.time() - s_time), 1)))
@@ -162,6 +157,18 @@ while True:
 #	Gz = gyro_z/131.0
 
         start_time = time.time()
+
+        def check_stop_input():
+                while True:
+                        command = input("Enter 'stop' to stop the animation: ")
+                        if command.lower() == 'stop':
+                                stop_animation()
+                                break
+
+        # Thread to check for stop command
+        stop_thread = threading.Thread(target=check_stop_input)
+        stop_thread.start()
+
 
         animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
         animation_thread.start()
