@@ -64,6 +64,11 @@ def acc_animate(i, s_time, xs, ys):
         # Read data from MPU6050
         linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
 
+        command = input("Enter 'stop' to stop the animation: ")
+        if command.lower() == 'stop':
+                stop_animation()
+                print("Stopping animation")
+
         # Add x and y to lists
         
         xs.append(str(round((time.time() - s_time), 1)))
@@ -161,10 +166,7 @@ while True:
         animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
         animation_thread.start()
 
-        command = input("Enter 'stop' to stop the animation: ")
-        if command.lower() == 'stop':
-                stop_animation()
-                break
+
 
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
