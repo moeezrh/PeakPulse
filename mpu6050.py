@@ -133,7 +133,7 @@ fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
 xs = []
 ys = []
-
+result = ""
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 Device_Address = 0x68   # MPU6050 device address
