@@ -12,6 +12,7 @@ import threading
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+     
 
 #some MPU6050 Registers and their Address
 PWR_MGMT_1   = 0x6B
@@ -58,7 +59,7 @@ def read_raw_data(addr):
 
 
 # This function is called periodically from FuncAnimation
-def animate(i, s_time, xs, ys):
+def acc_animate(i, s_time, xs, ys):
 
         # Read data from MPU6050
         linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
@@ -82,6 +83,32 @@ def animate(i, s_time, xs, ys):
         plt.subplots_adjust(bottom=0.30)
         plt.title('Linear Acceleration over Time')
         plt.ylabel('Acceleration (g)')
+
+# def speed_animate(i, s_time, xs, ys):
+
+#         # Read data from MPU6050
+#         linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
+
+#         # Add x and y to lists
+        
+#         xs.append(str(round((time.time() - s_time), 1)))
+#         ys.append(linear_acc_value)
+
+#         # Limit x and y lists to 20 items
+#         # xs = xs[-20:]
+#         # ys = ys[-20:]
+
+#         # Draw x and y lists
+#         ax.clear()
+#         ax.plot(xs, ys)
+#         ax.set_ylim(0, 5)
+
+#         # Format plot
+#         plt.xticks(rotation=45, ha='right')
+#         plt.subplots_adjust(bottom=0.30)
+#         plt.title('Linear Acceleration over Time')
+#         plt.ylabel('Acceleration (g)')
+
 
 # Create figure for plotting
 fig = plt.figure()
@@ -110,7 +137,7 @@ input_thread = threading.Thread(target=get_user_input)
 input_thread.start()
 
 while True:
-        if exit_flag:
+        if exit_flag = True:
                 print("Stopping the loop...")
         break
 
@@ -142,5 +169,6 @@ while True:
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
         sleep(0.01)
-if __name__ == "__main__":
-    acc_graph()
+
+
+   
