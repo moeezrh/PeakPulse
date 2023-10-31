@@ -84,6 +84,14 @@ def acc_animate(i, s_time, xs, ys):
         plt.title('Linear Acceleration over Time')
         plt.ylabel('Acceleration (g)')
 
+def start_acc_animation(start_time, xs, ys):
+        ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
+        plt.show()
+
+def stop_animation():
+        plt.close()
+
+
 # def speed_animate(i, s_time, xs, ys):
 
 #         # Read data from MPU6050
@@ -118,28 +126,14 @@ ys = []
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 Device_Address = 0x68   # MPU6050 device address
-# Flag to control acceleration graph loop
-exit_flag = False
 
-def get_user_input():
-    global exit_flag
-    while True:
-        user_input = input("Type 'stop' to exit: ")
-        if user_input.lower() == "stop":
-            exit_flag = True
-            break
+
 MPU_Init()
 
 print (" Reading Data of Gyroscope and Accelerometer")
 
-# Start a separate thread to check for user input
-input_thread = threading.Thread(target=get_user_input)
-input_thread.start()
 
 while True:
-        if exit_flag == True:
-                print("Stopping the loop...")
-                break
 
 
         #Read Accelerometer raw value
@@ -163,9 +157,14 @@ while True:
 #	Gz = gyro_z/131.0
 
         start_time = time.time()
-        ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
-        plt.show()
 
+        animation_thread = threading.Thread(target=start_animation(start_time, xs, ys))
+        animation_thread.start()
+
+        command = input("Enter 'stop' to stop the animation: ")
+        if command.lower() == 'stop':
+                stop_animation()
+                break
 
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
