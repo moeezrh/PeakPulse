@@ -94,12 +94,14 @@ def start_acc_animation(start_time, xs, ys):
 def stop_animation():
         plt.close()
 
-def check_stop_input(queue):
-        while True:
-                command = input("Enter 'stop' to stop the animation: ")
-                if command.lower() == 'stop':
-                        queue.put("stop")
-                        stop_animation()
+def 
+
+# def check_stop_input(queue):
+#         while True:
+#                 command = input("Enter 'stop' to stop the animation: ")
+#                 if command.lower() == 'stop':
+#                         queue.put("stop")
+#                         stop_animation()
 
 
 # def speed_animate(i, s_time, xs, ys):
@@ -169,17 +171,17 @@ while result != "stop":
 
         start_time = time.time()
 
-        q = Queue()
+        #q = Queue()
 
         # Thread to check for stop command
-        stop_thread = threading.Thread(target=check_stop_input, args=(q,))
-        stop_thread.start()
+        #stop_thread = threading.Thread(target=check_stop_input, args=(q,))
+        #stop_thread.start()
 
 
         animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
         animation_thread.start()
 
-        result = q.get()
+        #result = q.get()
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
         sleep(0.01)
