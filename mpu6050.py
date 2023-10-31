@@ -134,7 +134,7 @@ MPU_Init()
 print (" Reading Data of Gyroscope and Accelerometer")
 
 
-while True:
+while end_loop == False:
 
 
         #Read Accelerometer raw value
@@ -163,8 +163,8 @@ while True:
                 while True:
                         command = input("Enter 'stop' to stop the animation: ")
                         if command.lower() == 'stop':
-                                stop_animation()
                                 end_loop = True
+                                stop_animation()
                                 break
 
         # Thread to check for stop command
@@ -174,9 +174,6 @@ while True:
 
         animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
         animation_thread.start()
-
-        if end_loop == True:
-                break
 
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
