@@ -163,7 +163,7 @@ while True:
 #	Gz = gyro_z/131.0
 
         start_time = time.time()
-        ani = animation.FuncAnimation(fig, animate, fargs=(start_time, xs, ys), interval=100)
+        ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
         plt.show()
 
 
