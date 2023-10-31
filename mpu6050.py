@@ -139,7 +139,8 @@ input_thread.start()
 while True:
         if exit_flag == True:
                 print("Stopping the loop...")
-        break
+                break
+
 
         #Read Accelerometer raw value
         acc_x = read_raw_data(ACCEL_XOUT_H)
