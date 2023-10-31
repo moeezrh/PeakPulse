@@ -158,7 +158,7 @@ while True:
 
         start_time = time.time()
 
-        animation_thread = threading.Thread(target=start_animation(start_time, xs, ys))
+        animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
         animation_thread.start()
 
         command = input("Enter 'stop' to stop the animation: ")
