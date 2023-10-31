@@ -94,7 +94,7 @@ def start_acc_animation(start_time, xs, ys):
 def stop_animation():
         plt.close()
 
-def check_stop_input():
+def check_stop_input(queue):
         while True:
                 command = input("Enter 'stop' to stop the animation: ")
                 if command.lower() == 'stop':
