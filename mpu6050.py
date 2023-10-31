@@ -137,7 +137,7 @@ input_thread = threading.Thread(target=get_user_input)
 input_thread.start()
 
 while True:
-        if exit_flag = True:
+        if exit_flag == True:
                 print("Stopping the loop...")
         break
 
