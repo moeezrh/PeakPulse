@@ -61,48 +61,6 @@ def read_raw_data(addr):
         return value
 
 
-# This function is called periodically from FuncAnimation
-def acc_animate(i, s_time, xs, ys):
-
-        # Read data from MPU6050
-        linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
-
-        # Add x and y to lists
-        
-        xs.append(str(round((time.time() - s_time), 1)))
-        ys.append(linear_acc_value)
-
-        # Limit x and y lists to 20 items
-        # xs = xs[-20:]
-        # ys = ys[-20:]
-
-        # Draw x and y lists
-        ax.clear()
-        ax.plot(xs, ys)
-        ax.set_ylim(0, 5)
-
-        # Format plot
-        plt.xticks(rotation=45, ha='right')
-        plt.subplots_adjust(bottom=0.30)
-        plt.title('Linear Acceleration over Time')
-        plt.ylabel('Acceleration (g)')
-
-def start_acc_animation(start_time, xs, ys):
-        ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
-        plt.show()
-
-def stop_animation():
-        plt.close()
-
-
-# def check_stop_input(queue):
-#         while True:
-#                 command = input("Enter 'stop' to stop the animation: ")
-#                 if command.lower() == 'stop':
-#                         queue.put("stop")
-#                         stop_animation()
-
-
 # def speed_animate(i, s_time, xs, ys):
 
 #         # Read data from MPU6050
@@ -145,7 +103,7 @@ MPU_Init()
 print (" Reading Data of Gyroscope and Accelerometer")
 
 
-while result != "stop":
+while True:
 
 
         #Read Accelerometer raw value
@@ -169,18 +127,9 @@ while result != "stop":
 #	Gz = gyro_z/131.0
 
         start_time = time.time()
+        #ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
+        #plt.show()
 
-        #q = Queue()
-
-        # Thread to check for stop command
-        #stop_thread = threading.Thread(target=check_stop_input, args=(q,))
-        #stop_thread.start()
-
-
-        animation_thread = threading.Thread(target=start_acc_animation(start_time, xs, ys))
-        animation_thread.start()
-
-        #result = q.get()
 #	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
         print ("\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az)                                                                 
         sleep(0.01)
