@@ -6,7 +6,7 @@ import smbus			#import SMBus module of I2C
 import time        
 from time import sleep
 import math
-from linear_acc import calc_linear_acc
+from acc_functions import calc_linear_acc
 from queue import Queue
 
 
