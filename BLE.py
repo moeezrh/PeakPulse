@@ -3,7 +3,7 @@ import bluetooth
 # MAC address of the computer you are connected to
 target_address = 'AC:12:03:78:DF:E2'  # Replace this with the computer's MAC address
 
-port = 1  # The default port for Bluetooth RFCOMM communication
+port = 4  # The default port for Bluetooth RFCOMM communication
 
 # Establish a connection to the computer
 sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
