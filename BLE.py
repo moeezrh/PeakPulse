@@ -42,25 +42,24 @@ def MPU_Init():
 	#Write to interrupt enable register
 	bus.write_byte_data(Device_Address, INT_ENABLE, 1)
 
-
+def read_raw_data(addr):
+	#Accelero and Gyro value are 16-bit
+        high = bus.read_byte_data(Device_Address, addr)
+        low = bus.read_byte_data(Device_Address, addr+1)
+    
+        #concatenate higher and lower value
+        value = ((high << 8) | low)
+        
+        #to get signed value from mpu6050
+        if(value > 32768):
+                value = value - 65536
+        return value
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
 Device_Address = 0x68   # MPU6050 device address
 
 
 MPU_Init()
-
-
-#Read Accelerometer raw value
-acc_x = read_raw_data(ACCEL_XOUT_H)
-acc_y = read_raw_data(ACCEL_YOUT_H)
-acc_z = read_raw_data(ACCEL_ZOUT_H)
-
-
-#Full scale range +/- 250 degree/C as per sensitivity scale factor
-Ax = acc_x/16384.0
-Ay = acc_y/16384.0
-Az = acc_z/16384.0
 
 
 while True:
@@ -76,13 +75,8 @@ while True:
     Az = acc_z/16384.0
 
     message = "\tAx g: " + str(round(Ax, 2)) + "\tAy g: " + str(round(Ay, 2)) + "\tAz g: " + str(round(Az, 2))
+    sock.send(message)
 
 	
-# Data to be sent
-message = "Hello from Raspberry Pi!"
-
-# Send the data
-sock.send(message)
-
 # Close the socket
 sock.close()
