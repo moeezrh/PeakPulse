@@ -1,0 +1,23 @@
+# this enters the bluetooth control of the RPI
+bluetoothctl
+
+# turns off the current agent?
+agent off
+
+# powers on bluetooth module
+power on
+
+# turns on bluetooth discoverability
+discoverable on
+
+# allows RPI to be paired to
+pairable on
+
+# changes connection type so no pin needs to be inputted on either side to connect (unsecure for now)
+agent NoInputNoOutput
+
+# sets that agent as the current agent?
+default-agent
+
+# exits the bluetooth control
+exit
