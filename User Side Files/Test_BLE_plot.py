@@ -36,11 +36,11 @@ def acc_animate(i, s_time, xs, ys):
 
         data_str = read_from_bluetooth()
 
-        ax = float(data_str.split('Ax g: ')[1].split('Ay')[0].strip())
-        ay = float(data_str.split('Ay g: ')[1].split('Az')[0].strip())
+        accx = float(data_str.split('Ax g: ')[1].split('Ay')[0].strip())
+        accy = float(data_str.split('Ay g: ')[1].split('Az')[0].strip())
 
         # Read data from MPU6050
-        linear_acc_value = calc_linear_acc(ax, ay)
+        linear_acc_value = calc_linear_acc(accx, accy)
 
         # Add x and y to lists
 

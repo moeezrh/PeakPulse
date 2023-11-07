@@ -74,7 +74,7 @@ while True:
     Ay = acc_y/16384.0
     Az = acc_z/16384.0
 
-    message = "Ax g: " + str(round(Ax, 2)) + "Ay g: " + str(round(Ay, 2)) + "Az g: " + str(round(Az, 2))
+    message = "Ax g: " + str(round(Ax, 2)) + "\tAy g: " + str(round(Ay, 2)) + "\tAz g: " + str(round(Az, 2))
     sock.send(message)
 
 	
