@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import matplotlib.animation as animation
 
 # Initialize lists to store the time, Ax, and Ay values
 times = []
@@ -104,8 +104,6 @@ xs = []
 ys = []
 result = ""
 
-# Use FuncAnimation to update the plot in real-time
-ani = FuncAnimation(fig, update_plot, interval=100)
-
-# Show the plot
+start_time = time.time()
+ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
 plt.show()
