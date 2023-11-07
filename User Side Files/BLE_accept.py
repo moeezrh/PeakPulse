@@ -26,9 +26,10 @@ time.sleep(5)
 try:
     while True:
         data = client_sock.recv(1024)
+        output = data.decode('utf-8')
         if not data:
             break
-        print(data)
+        print(output)
 except OSError:
     pass
 
