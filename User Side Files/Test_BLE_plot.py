@@ -1,12 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
-# Initialize lists to store the time, Ax, and Ay values
-times = []
-ax_values = []
-ay_values = []
-products = []
-
+from acc_functions import calc_linear_acc
 
 import bluetooth
 import time
@@ -37,12 +31,16 @@ def read_from_bluetooth():
     data = client_sock.recv(1024)
     return data.decode('utf-8')
     
-start_time = time.time()
 
 def acc_animate(i, s_time, xs, ys):
 
+        data_str = read_from_bluetooth()
+
+        ax = float(data_str.split('Ax g: ')[1].split('Ay')[0].strip())
+        ay = float(data_str.split('Ay g: ')[1].split('Az')[0].strip())
+
         # Read data from MPU6050
-        linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
+        linear_acc_value = calc_linear_acc(ax, ay)
 
         # Add x and y to lists
 
@@ -64,39 +62,6 @@ def acc_animate(i, s_time, xs, ys):
         plt.title('Linear Acceleration over Time')
         plt.ylabel('Acceleration (g)')
 
-# This function is called periodically from FuncAnimation
-def update_plot(frame):
-    # Read the next line of data from Bluetooth
-    data_str = read_from_bluetooth()
-
-    # Parse the data
-    if data_str:
-        try:
-            # Find the Ax and Ay values in the data string
-            ax = float(data_str.split('Ax g: ')[1].split('Ay')[0].strip())
-            ay = float(data_str.split('Ay g: ')[1].split('Az')[0].strip())
-            
-            # Get the current time or an appropriate time stamp
-            current_time = ... # You need to define how to get this
-
-            # Append the data to the lists
-            times.append(current_time)
-            ax_values.append(ax)
-            ay_values.append(ay)
-            products.append(ax * ay)
-
-            # Update the plot
-            ax_line.set_data(times, ax_values)
-            ay_line.set_data(times, ay_values)
-            product_line.set_data(times, products)
-
-            # Adjust the plot to make all data visible
-            plt.xlim([min(times), max(times) + 1])
-            plt.ylim([min(products + ax_values + ay_values), max(products + ax_values + ay_values) + 1])
-
-            plt.draw()
-        except Exception as e:
-            print(f"Error parsing data: {e}")
 
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
@@ -105,5 +70,6 @@ ys = []
 result = ""
 
 start_time = time.time()
+
 ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
 plt.show()
