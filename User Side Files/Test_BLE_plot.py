@@ -26,6 +26,7 @@ print("Accepted connection from", client_info)
 
 time.sleep(5)
 
+data = client_sock.recv(1024 * 10)
 # This function simulates reading from a Bluetooth device
 def read_from_bluetooth():
     data = client_sock.recv(1024)
@@ -35,6 +36,7 @@ def read_from_bluetooth():
 def acc_animate(i, s_time, xs, ys):
 
         data_str = read_from_bluetooth()
+        print(data_str)
 
         accx = float(data_str.split('Ax g: ')[1].split('Ay')[0].strip())
         accy = float(data_str.split('Ay g: ')[1].split('Az')[0].strip())
