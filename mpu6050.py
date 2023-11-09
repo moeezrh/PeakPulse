@@ -67,7 +67,7 @@ def acc_animate(i, s_time, xs, ys):
 
         # Add x and y to lists
 
-        xs.append(str(round((time.time() - s_time), 1)))
+        xs.append(float(round((time.time() - s_time), 1)))
         ys.append(linear_acc_value)
 
         # Limit x and y lists to 20 items
