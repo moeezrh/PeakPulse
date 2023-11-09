@@ -26,8 +26,7 @@ GYRO_XOUT_H  = 0x43
 GYRO_YOUT_H  = 0x45
 GYRO_ZOUT_H  = 0x47
 
-global end_loop
-
+# Writing the addresses to each register on the MPU
 def MPU_Init():
 	#write to sample rate register
 	bus.write_byte_data(Device_Address, SMPLRT_DIV, 7)
@@ -44,6 +43,7 @@ def MPU_Init():
 	#Write to interrupt enable register
 	bus.write_byte_data(Device_Address, INT_ENABLE, 1)
 
+# Reads the data from the MPU
 def read_raw_data(addr):
 	#Accelero and Gyro value are 16-bit
         high = bus.read_byte_data(Device_Address, addr)
@@ -61,7 +61,9 @@ def read_raw_data(addr):
 def acc_animate(i, s_time, xs, ys):
 
         # Read data from MPU6050
-        linear_acc_value = calc_linear_acc(read_raw_data(ACCEL_XOUT_H)/16384.0, read_raw_data(ACCEL_ZOUT_H)/16384.0)
+        acc_x = read_raw_data(ACCEL_XOUT_H)/16384.0
+        acc_z = read_raw_data(ACCEL_ZOUT_H)/16384.0
+        linear_acc_value = calc_linear_acc(acc_x, acc_z)
 
         # Add x and y to lists
 
@@ -71,6 +73,9 @@ def acc_animate(i, s_time, xs, ys):
         # Limit x and y lists to 20 items
         # xs = xs[-20:]
         # ys = ys[-20:]
+
+        max_time = int(max(xs)) if xs else 0
+        ax.set_xticks(range(0, max_time + 1, 5))
 
         # Draw x and y lists
         ax.clear()
