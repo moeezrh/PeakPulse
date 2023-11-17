@@ -1,0 +1,10 @@
+#!/bin/bash
+# simple-agent - Bluetooth pairing helper script
+bluetoothctl << EOF
+agent off
+power on
+discoverable on
+pairable on
+agent NoInputNoOutput
+default-agent
+EOF
