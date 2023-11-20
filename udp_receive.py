@@ -1,7 +1,12 @@
 import socket
 
-UDP_IP = "127.0.0.1"
-UDP_PORT = 5005
+hostname = socket.gethostname()
+IPAddr = socket.gethostbyname(hostname)
+
+print("Computer IP Address is: " + IPAddr)
+
+UDP_IP = IPAddr
+UDP_PORT = 5006
 
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
