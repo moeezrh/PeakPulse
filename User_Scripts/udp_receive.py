@@ -18,3 +18,9 @@ while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     decoded_data = data.decode("utf-8")
     print("%s" % decoded_data)
+
+    acc_x = decoded_data[7:12]
+    acc_y = decoded_data[20:25]
+    acc_z = decoded_data[33:38]
+
+    
