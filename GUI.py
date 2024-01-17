@@ -3,7 +3,7 @@ from tkinter import font as tkfont
 import subprocess
 
 def run_mpu6050():
-    subprocess.run(["python", "mpu6050.py"])
+    subprocess.run(["python", "User_Scripts/udp_receive.py"])
 
 # Create the main window
 root = tk.Tk()
