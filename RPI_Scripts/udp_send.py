@@ -1,15 +1,16 @@
 import socket
 
+# setting the target receiver of data (it will always be .1.2 since there are only 2 devices allowed on the network)
 UDP_IP = "192.168.1.2"
 UDP_PORT = 5006
-#MESSAGE = b"Hello, World!"
- 
-print("UDP target IP: %s" % UDP_IP)
-print("UDP target port: %s" % UDP_PORT)
+
+# print("UDP target IP: %s" % UDP_IP)
+# print("UDP target port: %s" % UDP_PORT)
 
 sock = socket.socket(socket.AF_INET, # Internet
                       socket.SOCK_DGRAM) # UDP
 
+# protocol layer built on top of i2c protocol
 import smbus
 bus = smbus.SMBus(1)
 Device_Address = 0x68
@@ -59,8 +60,10 @@ def read_raw_data(addr):
             value = value - 65536
     return value
 
+# instantiates the addresses on the MPU
 MPU_Init()
 
+# continuously sends formatted accleerometer data
 while True:
 	acc_x = read_raw_data(ACCEL_XOUT_H)/16384.0
 	acc_y = read_raw_data(ACCEL_YOUT_H)/16384.0

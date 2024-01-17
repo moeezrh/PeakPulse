@@ -1,6 +1,5 @@
 import socket
 import time
-from time import sleep
 from acc_functions import calc_linear_acc
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -8,7 +7,7 @@ import matplotlib.animation as animation
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
 
-print("Computer IP Address is: " + IPAddr)
+# print("Computer IP Address is: " + IPAddr)
 
 UDP_IP = IPAddr
 UDP_PORT = 5006
@@ -61,15 +60,14 @@ xs = []
 ys = []
 result = ""
 
-clear = 0
-
 # Receive and discard incoming data until the buffer is empty
+clear = 0
 while clear < 20:
     data, addr = sock.recvfrom(10240)
     clear += 1
 
+# continuously plotting table
 while True:
-
     start_time = time.time()
     ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
     plt.show()
