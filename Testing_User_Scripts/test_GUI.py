@@ -3,11 +3,15 @@ from tkinter import font as tkfont
 import subprocess
 
 def run_mpu6050():
-    subprocess.run(["python", "Testing_User_Scripts/test_running.py"])
+    subprocess.Popen(["python", "Testing_User_Scripts/test_running.py"])
+    stop_button.pack(pady=20)  # Show the stop button
 
 def jump_mpu6050():
-    subprocess.run(["python", "User_Scripts/udp_receive_jumping.py"])
-    
+    subprocess.Popen(["python", "User_Scripts/udp_receive_jumping.py"])
+
+def stop_plotting():
+    print("test")
+
 # Create the main window
 root = tk.Tk()
 root.title("Welcome to PeakPulse: Choose your exercise")
@@ -24,6 +28,8 @@ lbl_instruction.pack(pady=10)  # Place the label on the window
 # Create buttons to run scripts
 btn_script1 = tk.Button(root, text="Running", command=run_mpu6050, font=ButtonFont, bg="#9B9391", fg="white")
 btn_script2 = tk.Button(root, text="Jumping", command=jump_mpu6050, font=ButtonFont, bg="#9B9391", fg="white")  # Placeholder 
+# Stop button - initially not displayed
+stop_button = tk.Button(root, text="Stop Plotting", command=stop_plotting)
 
 # Place the buttons on the window using pack
 btn_script1.pack(pady=40)
