@@ -60,10 +60,7 @@ xs = []
 ys = []
 result = ""
 
-#flag for plot to continue/stop
 
-
-signal.signal(signal.SIGINT, signal_handler)
 # Receive and discard incoming data until the buffer is empty
 clear = 0
 while clear < 20:
@@ -73,7 +70,8 @@ while clear < 20:
 # continuously plotting table
 while True:
     start_time = time.time()
-    ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
-    plt.show(block=False)
+    ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=100)
+    plt.show()
+    print("test")
 
 
