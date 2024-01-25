@@ -1,6 +1,5 @@
 import socket
 import time
-from acc_functions import calc_linear_acc
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -24,19 +23,18 @@ def acc_animate(i, s_time, xs, ys):
     decoded_data = data.decode("utf-8")
     print("%s" % decoded_data)
 
-    acc_x = decoded_data[7:12]
+    #acc_x = decoded_data[7:12]
     acc_y = decoded_data[20:25]
-    acc_z = decoded_data[33:38]
+    #acc_z = decoded_data[33:38]
 
-    print(float(acc_x))
-    print(float(acc_z))
+    vertical_acc = float(acc_y)
 
-    linear_acc_value = calc_linear_acc(float(acc_x), float(acc_z))
+    print(vertical_acc)
 
     # Add x and y to lists
 
     xs.append(float(round((time.time() - s_time), 1)))
-    ys.append(linear_acc_value)
+    ys.append(vertical_acc)
 
 
     max_time = int(max(xs)) if xs else 0
@@ -50,7 +48,7 @@ def acc_animate(i, s_time, xs, ys):
     # Format plot
     plt.xticks(rotation=45, ha='right')
     plt.subplots_adjust(bottom=0.30)
-    plt.title('Linear Acceleration over Time')
+    plt.title('Jump Force over Time')
     plt.ylabel('Acceleration (g)')
 
 # Create figure for plotting
@@ -69,7 +67,7 @@ while clear < 20:
 # continuously plotting table
 while True:
     start_time = time.time()
-    ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=100)
+    ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=1)
     plt.show()
 
 

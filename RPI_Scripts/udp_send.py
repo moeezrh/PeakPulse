@@ -27,6 +27,7 @@ ACCEL_ZOUT_H = 0x3F
 GYRO_XOUT_H  = 0x43
 GYRO_YOUT_H  = 0x45
 GYRO_ZOUT_H  = 0x47
+ACCEL_CONFIG = 0x1C
 
 
 # Writing the addresses to each register on the MPU
@@ -42,6 +43,9 @@ def MPU_Init():
 	
 	#Write to Gyro configuration register
 	bus.write_byte_data(Device_Address, GYRO_CONFIG, 24)
+
+	#Write to Accel configuration register
+	bus.write_byte_data(Device_Address, ACCEL_CONFIG, 16)
 	
 	#Write to interrupt enable register
 	bus.write_byte_data(Device_Address, INT_ENABLE, 1)
