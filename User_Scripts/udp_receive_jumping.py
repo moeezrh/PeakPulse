@@ -67,7 +67,7 @@ while clear < 20:
 # continuously plotting table
 while True:
     start_time = time.time()
-    ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=1)
+    ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=10)
     plt.show()
 
 

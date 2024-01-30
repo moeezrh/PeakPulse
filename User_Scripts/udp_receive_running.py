@@ -64,14 +64,14 @@ result = ""
 # Receive and discard incoming data until the buffer is empty
 clear = 0
 while clear < 20:
-    data, addr = sock.recvfrom(10240)
+    data, addr = sock.recvfrom(1024)
     clear += 1
 
 # continuously plotting table
-while True:
-    start_time = time.time()
-    ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=100)
-    plt.show()
-    print("test")
+
+start_time = time.time()
+ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=10)
+plt.show()
+print("test")
 
 
