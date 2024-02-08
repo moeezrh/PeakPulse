@@ -3,7 +3,8 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-keep_running = True
+keep_running = threading.Event()
+keep_running.set()
 start_time = time.time()
 # This function is called periodically from FuncAnimation
 def acc_animate(i, xs, ys, acc):
@@ -40,14 +41,13 @@ def check_termination():
         global keep_running
         #example
         time.sleep(10)
-        keep_running = False
-
+        keep_running.clear()
 # Start the animation in a separate thread
-animation_thread = threading.Thread(target=run_animation)
-animation_thread.start()
+run_animation()
 
 # Start the termination check in the main thread
-check_termination()
+termination_thread = threading.Thread(target=check_termination)
+termination_thread.start()
 
 # Wait for the termination condition to be met
 while keep_running:
