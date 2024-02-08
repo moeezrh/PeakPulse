@@ -36,6 +36,7 @@ def run_animation():
     ani = animation.FuncAnimation(fig, acc_animate, fargs=(xs, ys, acc), frames=len(acc), interval=100)
     # To save the animation, use ani.save() here
     plt.show()
+    fig.savefig("final.png")
 
 def check_termination():
         global keep_running
