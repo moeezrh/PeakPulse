@@ -3,6 +3,7 @@ import time
 from acc_functions import calc_linear_acc
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import numpy as np
 
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
@@ -79,9 +80,50 @@ ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time,
 plt.show()
 print("test")
 
+#Max Acceleration----------------------
 
 # maximum acceleration data
 linear_acc_values = [row[1] for row in linear_acc_list]
 linear_acc_max = max(linear_acc_values)
+
+# Extract the row where the 2nd element matches the linear_acc_max
+row_of_linear_acc_max = next(row for row in linear_acc_list if row[1] == linear_acc_max)
+
+#Extract the 1st element of that row which corresponds to the time
+time_of_acc_max = row_of_linear_acc_max[0]
+
+#Stride Time---------------------------May have to modify the extract rows code in case there is an error if the strides are uneven think it's fine tho
+
+# Initialize variables
+extracted_rows = []
+looking_for_non_zero = True  # Start by looking for non-zero following a zero
+previous_was_zero = True  # Initialize as True to capture the first non-zero
+stride_time_list = []
+
+for i, row in enumerate(linear_acc_list):
+    if looking_for_non_zero:
+        # If the previous was zero and the current is non-zero, switch the condition
+        if previous_was_zero and row[1] != 0:
+            extracted_rows.append(row)
+            looking_for_non_zero = False  # Next, look for a zero
+    else:
+        # If the previous was non-zero and the current is zero, switch the condition
+        if not previous_was_zero and row[1] == 0:
+            extracted_rows.append(row)
+            looking_for_non_zero = True  # Next, look for a non-zero
+    
+    # Update the previous_was_zero based on the current row
+    previous_was_zero = (row[1] == 0)
+
+for i in range(0, len(extracted_rows) - 1, 2):
+    # Subtract the first element of the i-th row from the (i+1)-th row
+    stride_time_result = extracted_rows[i + 1][0] - extracted_rows[i][0]
+    stride_time_list.append(result)
+
+#average stride time calc
+average_stride_time = np.mean(stride_time_list)
+
+#cadence calc is number of steps taken during the trial
+cadence = len(extracted_rows) / 2
 
 
