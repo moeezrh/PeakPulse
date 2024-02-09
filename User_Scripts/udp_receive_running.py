@@ -16,6 +16,8 @@ sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
 
+# List to store data
+linear_acc_list = []
 
 # This function is called periodically from FuncAnimation
 def acc_animate(i, s_time, xs, ys):
@@ -33,9 +35,12 @@ def acc_animate(i, s_time, xs, ys):
 
     linear_acc_value = calc_linear_acc(float(acc_x), float(acc_z))
 
+    plot_time = float(round((time.time() - s_time), 1))
+
+    linear_acc_list.append([plot_time, linear_acc_value])
     # Add x and y to lists
 
-    xs.append(float(round((time.time() - s_time), 1)))
+    xs.append(plot_time)
     ys.append(linear_acc_value)
 
 
@@ -73,5 +78,10 @@ start_time = time.time()
 ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=10)
 plt.show()
 print("test")
+
+
+# maximum acceleration data
+linear_acc_values = [row[1] for row in linear_acc_list]
+linear_acc_max = max(linear_acc_values)
 
 
