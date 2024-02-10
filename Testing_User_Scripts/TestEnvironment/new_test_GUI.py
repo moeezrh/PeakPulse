@@ -1,18 +1,42 @@
 import tkinter as tk
 from tkinter import font as tkfont
+from tkinter import *
+from tkinter.ttk import *
 import subprocess
 
+
+#Using subprocess.run instead makes the page open once the process is finished
 def run_mpu6050():
-    subprocess.Popen(["python", "Testing_User_Scripts/test_running.py"])
+    subprocess.run(["python", "Testing_User_Scripts/TestEnvironment/new_test_running.py"])
+    running_output_page()
 
 def jump_mpu6050():
-    subprocess.Popen(["python", "Testing_User_Scripts/test_running.py"])
+    subprocess.Popen(["python", "Testing_User_Scripts/TestEnvironment/new_test_running.py"])
+
+
+# function to open a new window 
+# on a button click
+def running_output_page():
+	
+    # Toplevel object which will 
+    # be treated as a new window
+    newWindow = Toplevel(root)
+    newWindow.title("Running Data Output")
+    newWindow.geometry("400x400")
+    newWindow.configure(bg="#212121")
+    # A Label widget to show in toplevel
+    running_title = tk.Label(newWindow, text="Running Data Analysis", font=TitleFont, bg="#212121", fg="white")
+    running_title.pack(pady=10)
+    #running_image = tk.Label(newWindow, image="C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/output.png")
+    #running_image.pack(pady=10)
+
+
 
 # Create the main window
 root = tk.Tk()
 root.title("PeakPulse")
 # Set the window size to 400x300 pixels
-root.geometry("400x300")  
+root.geometry("400x400")  
 # configures background color
 root.configure(bg="#212121")
 
