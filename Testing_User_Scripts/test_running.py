@@ -38,6 +38,7 @@ def run_animation():
     plt.show()
     fig.savefig("final.png")
 
+
 def check_termination():
         global keep_running
         #example
