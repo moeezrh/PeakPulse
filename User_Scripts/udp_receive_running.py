@@ -118,7 +118,7 @@ for i, row in enumerate(linear_acc_list):
 for i in range(0, len(extracted_rows) - 1, 2):
     # Subtract the first element of the i-th row from the (i+1)-th row
     stride_time_result = extracted_rows[i + 1][0] - extracted_rows[i][0]
-    stride_time_list.append(result)
+    stride_time_list.append(stride_time_result)
 
 #average stride time calc
 average_stride_time = np.mean(stride_time_list)
@@ -126,4 +126,6 @@ average_stride_time = np.mean(stride_time_list)
 #cadence calc is number of steps taken during the trial
 cadence = len(extracted_rows) / 2
 
-
+print(f"{cadence} is cadence")
+print(f"{average_stride_time}is stride time")
+print(f"{linear_acc_max} is max")
