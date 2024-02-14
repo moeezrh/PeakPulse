@@ -95,40 +95,60 @@ peak_force = linear_acc_max #* user_weight * 0.4535924
 #Energy--------------------------------
 
 # Initialize variables
+non_zero_acc = []
 extracted_rows = []
 looking_for_non_zero = True  # Start by looking for non-zero following a zero
 previous_was_zero = True  # Initialize as True to capture the first non-zero
-stride_time_list = []
+looking_for_non_zero2 = True  # Start by looking for non-zero following a zero
+previous_was_zero2 = True  # Initialize as True to capture the first non-zero
 
 for i, row in enumerate(linear_acc_list):
     if looking_for_non_zero:
         # If the previous was zero and the current is non-zero, switch the condition
         if previous_was_zero and row[1] != 0:
-            extracted_rows.append(row)
+            non_zero_acc.append(row)
             looking_for_non_zero = False  # Next, look for a zero
     else:
         # If the previous was non-zero and the current is zero, switch the condition
         if not previous_was_zero and row[1] != 0:
-            extracted_rows.append(row)
+            non_zero_acc.append(row)
         elif not previous_was_zero and row[1] ==0:
             looking_for_non_zero = True # Next, look for a non-zero
                
     # Update the previous_was_zero based on the current row
     previous_was_zero = (row[1] == 0)
 
-for i in range(0, len(extracted_rows) - 1, 2):
-    # Subtract the first element of the i-th row from the (i+1)-th row
-    stride_time_result = extracted_rows[i + 1][0] - extracted_rows[i][0]
-    stride_time_list.append(stride_time_result)
+for i, row in enumerate(linear_acc_list):
+    if looking_for_non_zero2:
+        # If the previous was zero and the current is non-zero, switch the condition
+        if previous_was_zero2 and row[1] != 0:
+            extracted_rows.append(row)
+            looking_for_non_zero2 = False  # Next, look for a zero
+    else:
+        # If the previous was non-zero and the current is zero, switch the condition
+        if not previous_was_zero2 and row[1] == 0:
+            extracted_rows.append(row)
+            looking_for_non_zero2 = True  # Next, look for a non-zero
+    
+    # Update the previous_was_zero based on the current row
+    previous_was_zero2 = (row[1] == 0)
 
-#average stride time calc
-average_stride_time = np.mean(stride_time_list)
+#integration of extracted jumps
+non_zero_sum = sum(non_zero_acc)
+#integration of entire list
+all_integration = sum(linear_acc_list[1])
 
-#cadence calc is number of steps taken during the trial
-cadence = len(extracted_rows) / 2
+#num_of_jumps calc is number of steps taken during the trial
+num_of_jumps = len(extracted_rows) / 2
 
-print(f"{cadence} is cadence")
-print(f"{average_stride_time}is stride time")
-print(f"{linear_acc_max} is max acceleration at {time_of_acc_max} seconds")
+avg_energy_non_zero = non_zero_sum / num_of_jumps
+
+avg_energy_all_integration = all_integration / num_of_jumps
+
+print(f"You jumped {num_of_jumps} times")
+print(f"Integration of extracted jumps was {non_zero_sum}")
+print(f"Integration of whole graph was {all_integration}")
+print(f"Avg energy of extracted jumps was {avg_energy_non_zero}")
+print(f"Avg energy of whole graph was {avg_energy_all_integration}")
 
 
