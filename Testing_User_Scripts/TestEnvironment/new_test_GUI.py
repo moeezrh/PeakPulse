@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import font as tkfont
 from tkinter import *
 from tkinter.ttk import *
+from PIL import Image, ImageTk
 import subprocess
 
 
@@ -22,13 +23,26 @@ def running_output_page():
     # be treated as a new window
     newWindow = Toplevel(root)
     newWindow.title("Running Data Output")
-    newWindow.geometry("400x400")
+    newWindow.geometry("800x800")
     newWindow.configure(bg="#212121")
     # A Label widget to show in toplevel
     running_title = tk.Label(newWindow, text="Running Data Analysis", font=TitleFont, bg="#212121", fg="white")
     running_title.pack(pady=10)
-    #running_image = tk.Label(newWindow, image="C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/output.png")
-    #running_image.pack(pady=10)
+
+    # To show the image of plot
+    pathToImage="C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/output.png"
+    im = Image.open(pathToImage)
+    ph = ImageTk.PhotoImage(im)
+    running_image = tk.Label(newWindow, image=ph)
+    running_image.image=ph
+    running_image.pack(pady=10)
+
+    #To show the data analysis
+    with open("C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/data.txt", 'r') as file:
+        data = file.read()
+    
+    running_data = tk.Label(newWindow, text=data, font=TextFont, justify="left", bg="#212121", fg="white")
+    running_data.pack(pady=10)
 
 
 
@@ -42,6 +56,7 @@ root.configure(bg="#212121")
 
 # Define a custom font
 TitleFont = tkfont.Font(family="Roboto", size=20, weight="bold")
+TextFont = tkfont.Font(family="Roboto", size=16, weight="normal")
 ButtonFont = tkfont.Font(family="Roboto", size=16, weight="normal")
 
 # Create a label widget
