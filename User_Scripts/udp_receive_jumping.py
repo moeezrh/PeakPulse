@@ -16,6 +16,8 @@ sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
 
+# List to store data
+linear_acc_list = []
 
 # This function is called periodically from FuncAnimation
 def acc_animate(i, s_time, xs, ys):
@@ -32,9 +34,12 @@ def acc_animate(i, s_time, xs, ys):
 
     print(vertical_acc)
 
+    plot_time = float(round((time.time() - s_time), 1))
+
+    linear_acc_list.append([plot_time, vertical_acc])
     # Add x and y to lists
 
-    xs.append(float(round((time.time() - s_time), 1)))
+    xs.append(plot_time)
     ys.append(vertical_acc)
 
 
@@ -49,7 +54,7 @@ def acc_animate(i, s_time, xs, ys):
     # Format plot
     plt.xticks(rotation=45, ha='right')
     plt.subplots_adjust(bottom=0.30)
-    plt.title('Jump Force over Time')
+    plt.title('Jump Acceleration over Time')
     plt.ylabel('Acceleration (g)')
 
 # Create figure for plotting
@@ -66,9 +71,84 @@ while clear < 20:
     clear += 1
 
 # continuously plotting table
-while True:
-    start_time = time.time()
-    ani = animation.FuncAnimation(fig, acc_animate, fargs=(start_time, xs, ys), interval=10)
-    plt.show()
+start_time = time.time()
+ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=10)
+plt.show()
+print("test")
+
+#Max Acceleration----------------------
+
+# maximum acceleration data
+linear_acc_values = [row[1] for row in linear_acc_list]
+linear_acc_max = max(linear_acc_values)
+
+# Extract the row where the 2nd element matches the linear_acc_max
+row_of_linear_acc_max = next(row for row in linear_acc_list if row[1] == linear_acc_max)
+
+#Extract the 1st element of that row which corresponds to the time
+time_of_acc_max = row_of_linear_acc_max[0]
+
+#Peak Force----------------------------
+
+peak_force = linear_acc_max #* user_weight * 0.4535924
+
+#Energy--------------------------------
+
+# Initialize variables
+non_zero_acc = []
+extracted_rows = []
+looking_for_non_zero = True  # Start by looking for non-zero following a zero
+previous_was_zero = True  # Initialize as True to capture the first non-zero
+looking_for_non_zero2 = True  # Start by looking for non-zero following a zero
+previous_was_zero2 = True  # Initialize as True to capture the first non-zero
+
+for i, row in enumerate(linear_acc_list):
+    if looking_for_non_zero:
+        # If the previous was zero and the current is non-zero, switch the condition
+        if previous_was_zero and row[1] != 0:
+            non_zero_acc.append(row)
+            looking_for_non_zero = False  # Next, look for a zero
+    else:
+        # If the previous was non-zero and the current is zero, switch the condition
+        if not previous_was_zero and row[1] != 0:
+            non_zero_acc.append(row)
+        elif not previous_was_zero and row[1] ==0:
+            looking_for_non_zero = True # Next, look for a non-zero
+               
+    # Update the previous_was_zero based on the current row
+    previous_was_zero = (row[1] == 0)
+
+for i, row in enumerate(linear_acc_list):
+    if looking_for_non_zero2:
+        # If the previous was zero and the current is non-zero, switch the condition
+        if previous_was_zero2 and row[1] != 0:
+            extracted_rows.append(row)
+            looking_for_non_zero2 = False  # Next, look for a zero
+    else:
+        # If the previous was non-zero and the current is zero, switch the condition
+        if not previous_was_zero2 and row[1] == 0:
+            extracted_rows.append(row)
+            looking_for_non_zero2 = True  # Next, look for a non-zero
+    
+    # Update the previous_was_zero based on the current row
+    previous_was_zero2 = (row[1] == 0)
+
+#integration of extracted jumps
+non_zero_sum = sum(non_zero_acc)
+#integration of entire list
+all_integration = sum(linear_acc_list[1])
+
+#num_of_jumps calc is number of steps taken during the trial
+num_of_jumps = len(extracted_rows) / 2
+
+avg_energy_non_zero = non_zero_sum / num_of_jumps
+
+avg_energy_all_integration = all_integration / num_of_jumps
+
+print(f"You jumped {num_of_jumps} times")
+print(f"Integration of extracted jumps was {non_zero_sum}")
+print(f"Integration of whole graph was {all_integration}")
+print(f"Avg energy of extracted jumps was {avg_energy_non_zero}")
+print(f"Avg energy of whole graph was {avg_energy_all_integration}")
 
 

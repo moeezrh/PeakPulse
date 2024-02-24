@@ -56,7 +56,7 @@ def acc_animate(i, s_time, xs, ys):
     # Format plot
     plt.xticks(rotation=45, ha='right')
     plt.subplots_adjust(bottom=0.30)
-    plt.title('Linear Acceleration over Time')
+    plt.title('Leg Acceleration over Time')
     plt.ylabel('Acceleration (g)')
 
 # Create figure for plotting
@@ -92,7 +92,7 @@ row_of_linear_acc_max = next(row for row in linear_acc_list if row[1] == linear_
 #Extract the 1st element of that row which corresponds to the time
 time_of_acc_max = row_of_linear_acc_max[0]
 
-#Stride Time---------------------------May have to modify the extract rows code in case there is an error if the strides are uneven think it's fine tho
+#Stride Time---------------------------
 
 # Initialize variables
 extracted_rows = []
@@ -128,4 +128,4 @@ cadence = len(extracted_rows) / 2
 
 print(f"{cadence} is cadence")
 print(f"{average_stride_time}is stride time")
-print(f"{linear_acc_max} is max")
+print(f"{linear_acc_max} is max acceleration at {time_of_acc_max} seconds")
