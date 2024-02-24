@@ -69,7 +69,7 @@ result = ""
 
 # Receive and discard incoming data until the buffer is empty
 clear = 0
-while clear < 20:
+while clear < 30:
     data, addr = sock.recvfrom(1024)
     clear += 1
 
