@@ -8,11 +8,11 @@ import subprocess
 
 #Using subprocess.run instead makes the page open once the process is finished
 def run_mpu6050():
-    subprocess.run(["python", "Testing_User_Scripts/User_Scripts/udp_receive_running.py"])
+    subprocess.run(["python", "User_Scripts/udp_receive_running.py"])
     running_output_page()
 
 def jump_mpu6050():
-    subprocess.Popen(["python", "Testing_User_Scripts/User_Scripts/udp_receive_jumping.py"])
+    subprocess.Popen(["python", "User_Scripts/udp_receive_jumping.py"])
 
 
 # function to open a new window 
