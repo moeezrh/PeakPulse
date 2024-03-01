@@ -57,6 +57,12 @@ def acc_animate(i, s_time, xs, ys):
     plt.title('Jump Acceleration over Time')
     plt.ylabel('Acceleration (g)')
 
+    if plot_time >= 10:
+        ani.event_source.stop()
+        fig.savefig("User_Scripts/graph.png")
+        plt.close()
+
+
 # Create figure for plotting
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
@@ -150,5 +156,15 @@ print(f"Integration of extracted jumps was {non_zero_sum}")
 print(f"Integration of whole graph was {all_integration}")
 print(f"Avg energy of extracted jumps was {avg_energy_non_zero}")
 print(f"Avg energy of whole graph was {avg_energy_all_integration}")
+
+
+#Write the data to a text file
+filename = "C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/data.txt"
+with open(filename, "w") as file:
+        file.write("Number of Jumps: " + str(num_of_jumps) + "\n")
+        file.write("Integration of Jumps: " + str(non_zero_sum) + "\n")
+        file.write("Integration of graph: " + str(all_integration) + "\n")
+        file.write("Average energy of Jumps: " + str(avg_energy_non_zero) + "\n")
+        file.write("Average energy of graph: " + str(avg_energy_all_integration) + "\n")
 
 

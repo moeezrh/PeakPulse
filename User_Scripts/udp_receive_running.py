@@ -59,6 +59,11 @@ def acc_animate(i, s_time, xs, ys):
     plt.title('Leg Acceleration over Time')
     plt.ylabel('Acceleration (g)')
 
+    if plot_time >= 10:
+        ani.event_source.stop()
+        fig.savefig("Testing_User_Scripts/graph.png")
+        plt.close()
+
 # Create figure for plotting
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
@@ -129,3 +134,11 @@ cadence = len(extracted_rows) / 2
 print(f"{cadence} is cadence")
 print(f"{average_stride_time}is stride time")
 print(f"{linear_acc_max} is max acceleration at {time_of_acc_max} seconds")
+
+#Write the data to a text file
+filename = "C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/data.txt"
+with open(filename, "w") as file:
+        file.write("Maximum Acceleration: " + str(linear_acc_max) + "\n")
+        file.write("Cadence: " + str(cadence) + "\n")
+        file.write("Average Stride Time: " + str(average_stride_time) + "\n")
+

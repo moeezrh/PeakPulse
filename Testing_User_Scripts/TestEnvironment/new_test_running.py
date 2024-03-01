@@ -42,7 +42,7 @@ def acc_animate(i, s_time, xs, ys, test_values):
     # Stop the graph after 10 seconds
     if plot_time >= 10:
         ani.event_source.stop()
-        fig.savefig("output.png")
+        fig.savefig("Testing_User_Scripts/graph.png")
         plt.close()
 
 # Create figure for plotting

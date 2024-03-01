@@ -1,3 +1,3 @@
 Maximum Acceleration: 5
-Cadence: 20.5
-Average Stride Time: 0.3450000000000002
+Cadence: 20.0
+Average Stride Time: 0.36000000000000004
