@@ -30,7 +30,7 @@ def running_output_page():
     running_title.pack(pady=10)
 
     # To show the image of plot
-    pathToImage="C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/output.png"
+    pathToImage="C:/Users/moeez/Documents/repos/PeakPulse/graph.png"
     im = Image.open(pathToImage)
     ph = ImageTk.PhotoImage(im)
     running_image = tk.Label(newWindow, image=ph)
@@ -38,7 +38,7 @@ def running_output_page():
     running_image.pack(pady=10)
 
     #To show the data analysis
-    with open("C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/data.txt", 'r') as file:
+    with open("C:/Users/moeez/Documents/repos/PeakPulse/data.txt", 'r') as file:
         data = file.read()
     
     running_data = tk.Label(newWindow, text=data, font=TextFont, justify="left", bg="#212121", fg="white")

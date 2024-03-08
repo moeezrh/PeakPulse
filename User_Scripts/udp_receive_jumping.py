@@ -24,15 +24,15 @@ def acc_animate(i, s_time, xs, ys):
 
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     decoded_data = data.decode("utf-8")
-    print("%s" % decoded_data)
+    #print("%s" % decoded_data)
 
     #acc_x = decoded_data[7:12]
     acc_y = decoded_data[20:25]
     #acc_z = decoded_data[33:38]
 
-    vertical_acc = float(acc_y)
+    vertical_acc = float(acc_y) - 1
 
-    print(vertical_acc)
+    #print(vertical_acc)
 
     plot_time = float(round((time.time() - s_time), 1))
 
@@ -49,7 +49,7 @@ def acc_animate(i, s_time, xs, ys):
     # Draw x and y lists
     ax.clear()
     ax.plot(xs, ys)
-    ax.set_ylim(0, 5)
+    ax.set_ylim(-5, 5)
 
     # Format plot
     plt.xticks(rotation=45, ha='right')
@@ -59,7 +59,7 @@ def acc_animate(i, s_time, xs, ys):
 
     if plot_time >= 10:
         ani.event_source.stop()
-        fig.savefig("User_Scripts/graph.png")
+        fig.savefig("graph.png")
         plt.close()
 
 
@@ -80,7 +80,6 @@ while clear < 20:
 start_time = time.time()
 ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=10)
 plt.show()
-print("test")
 
 #Max Acceleration----------------------
 
@@ -140,7 +139,8 @@ for i, row in enumerate(linear_acc_list):
     previous_was_zero2 = (row[1] == 0)
 
 #integration of extracted jumps
-non_zero_sum = sum(non_zero_acc)
+
+non_zero_sum = sum(non_zero_acc[1])
 #integration of entire list
 all_integration = sum(linear_acc_list[1])
 
@@ -159,7 +159,7 @@ print(f"Avg energy of whole graph was {avg_energy_all_integration}")
 
 
 #Write the data to a text file
-filename = "C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/data.txt"
+filename = "C:/Users/moeez/Documents/repos/PeakPulse/data.txt"
 with open(filename, "w") as file:
         file.write("Number of Jumps: " + str(num_of_jumps) + "\n")
         file.write("Integration of Jumps: " + str(non_zero_sum) + "\n")

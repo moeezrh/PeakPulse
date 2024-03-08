@@ -5,64 +5,17 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 
+#Connecting to the RPI Wirelessly
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
-
-# print("Computer IP Address is: " + IPAddr)
-
 UDP_IP = IPAddr
 UDP_PORT = 5006
-
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
 
 # List to store data
 linear_acc_list = []
-
-# This function is called periodically from FuncAnimation
-def acc_animate(i, s_time, xs, ys):
-
-    data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-    decoded_data = data.decode("utf-8")
-    print("%s" % decoded_data)
-
-    acc_x = decoded_data[7:12]
-    acc_y = decoded_data[20:25]
-    acc_z = decoded_data[33:38]
-
-    print(float(acc_x))
-    print(float(acc_z))
-
-    linear_acc_value = calc_linear_acc(float(acc_x), float(acc_z))
-
-    plot_time = float(round((time.time() - s_time), 1))
-
-    linear_acc_list.append([plot_time, linear_acc_value])
-    # Add x and y to lists
-
-    xs.append(plot_time)
-    ys.append(linear_acc_value)
-
-
-    max_time = int(max(xs)) if xs else 0
-    ax.set_xticks(range(0, max_time + 1, 5))
-
-    # Draw x and y lists
-    ax.clear()
-    ax.plot(xs, ys)
-    ax.set_ylim(0, 5)
-
-    # Format plot
-    plt.xticks(rotation=45, ha='right')
-    plt.subplots_adjust(bottom=0.30)
-    plt.title('Leg Acceleration over Time')
-    plt.ylabel('Acceleration (g)')
-
-    if plot_time >= 10:
-        ani.event_source.stop()
-        fig.savefig("Testing_User_Scripts/graph.png")
-        plt.close()
 
 # Create figure for plotting
 fig = plt.figure()
@@ -71,6 +24,46 @@ xs = []
 ys = []
 result = ""
 
+# Format plot
+plt.xticks(rotation=45, ha='right')
+plt.subplots_adjust(bottom=0.30)
+plt.title('Leg Acceleration over Time')
+plt.ylabel('Acceleration (g)')
+ax.set_ylim(0, 5)
+ax.set_xlim(0, 10)
+
+my_line, = ax.plot([], [])
+
+# Updating the live plot
+def acc_animate(i, s_time, xs, ys):
+
+    data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+    decoded_data = data.decode("utf-8")
+    #print("%s" % decoded_data)
+
+    acc_x = decoded_data[7:12]
+    #acc_y = decoded_data[20:25]
+    acc_z = decoded_data[33:38]
+
+
+    linear_acc_value = calc_linear_acc(float(acc_x), float(acc_z))
+    if linear_acc_value < 0.5:
+        linear_acc_value = 0
+
+    plot_time = float(round((time.time() - s_time), 1))
+
+    linear_acc_list.append([plot_time, linear_acc_value])
+    
+    # Add x and y to lists
+    xs.append(plot_time)
+    ys.append(linear_acc_value)
+    
+    my_line.set_data(xs, ys)
+
+    if plot_time >= 10:
+        ani.event_source.stop()
+        fig.savefig("graph.png")
+        plt.close()
 
 # Receive and discard incoming data until the buffer is empty
 clear = 0
@@ -79,9 +72,8 @@ while clear < 30:
     clear += 1
 
 # continuously plotting table
-
 start_time = time.time()
-ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=10)
+ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=0)
 plt.show()
 print("test")
 
@@ -141,4 +133,3 @@ with open(filename, "w") as file:
         file.write("Maximum Acceleration: " + str(linear_acc_max) + "\n")
         file.write("Cadence: " + str(cadence) + "\n")
         file.write("Average Stride Time: " + str(average_stride_time) + "\n")
-

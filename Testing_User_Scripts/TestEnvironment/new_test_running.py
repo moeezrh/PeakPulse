@@ -42,7 +42,7 @@ def acc_animate(i, s_time, xs, ys, test_values):
     # Stop the graph after 10 seconds
     if plot_time >= 10:
         ani.event_source.stop()
-        fig.savefig("Testing_User_Scripts/graph.png")
+        fig.savefig("graph.png")
         plt.close()
 
 # Create figure for plotting
@@ -113,7 +113,7 @@ print(f"{linear_acc_max} is max")
 
 
 #Write the data to a text file
-filename = "C:/Users/moeez/Documents/repos/PeakPulse/Testing_User_Scripts/TestEnvironment/data.txt"
+filename = "C:/Users/moeez/Documents/repos/PeakPulse/data.txt"
 with open(filename, "w") as file:
         file.write("Maximum Acceleration: " + str(linear_acc_max) + "\n")
         file.write("Cadence: " + str(cadence) + "\n")
