@@ -5,6 +5,7 @@ from tkinter.ttk import *
 from PIL import Image, ImageTk
 import subprocess
 
+filename = "C:/Users/moeez/Documents/repos/PeakPulse/config.txt"
 
 #Using subprocess.run instead makes the page open once the process is finished
 def run_mpu6050():
@@ -12,8 +13,14 @@ def run_mpu6050():
     running_output_page()
 
 def jump_mpu6050():
-    subprocess.Popen(["python", "User_Scripts/udp_receive_jumping.py"])
+    with open(filename, "w") as file:
+        file.write(str(e.get()))
+    subprocess.run(["python", "User_Scripts/udp_receive_jumping.py"])
+    running_output_page()
 
+def punching_mpu6050():
+    subprocess.run(["python", "User_Scripts/udp_receive_punching.py"])
+    running_output_page()
 
 # function to open a new window 
 # on a button click
@@ -65,11 +72,20 @@ lbl_instruction.pack(pady=10)  # Place the label on the window
 
 # Create buttons to run scripts
 btn_running = tk.Button(root, text="Running", command=run_mpu6050, font=ButtonFont, bg="#212121", fg="white")
-btn_jumping = tk.Button(root, text="Jumping", command=jump_mpu6050, font=ButtonFont, bg="#212121", fg="white")  # Placeholder 
+btn_jumping = tk.Button(root, text="Jumping", command=jump_mpu6050, font=ButtonFont, bg="#212121", fg="white")
+btn_punching = tk.Button(root, text="Punching", command=punch_mpu6050, font=ButtonFont, bg="#212121", fg="white")
+
 
 # Place the buttons on the window using pack
 btn_running.pack(pady=40)
 btn_jumping.pack(pady=10)
+btn_punching.pack(pady=10)
+
+# Create input field
+input_instruction = tk.Label(root, text="Enter your weight(lbs)", font=ButtonFont, bg="#212121", fg="white")
+input_instruction.pack(pady=10)  # Place the label on the window
+e = Entry(root)
+e.pack()
 
 # Start the GUI event loop
 root.mainloop()

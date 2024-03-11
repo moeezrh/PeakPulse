@@ -18,8 +18,24 @@ sock.bind((UDP_IP, UDP_PORT))
 
 # List to store data
 linear_acc_list = []
+# Create figure for plotting
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+xs = []
+ys = []
+result = ""
 
-# This function is called periodically from FuncAnimation
+# Format plot
+plt.xticks(rotation=45, ha='right')
+plt.subplots_adjust(bottom=0.30)
+plt.title('Jump Acceleration over Time')
+plt.ylabel('Acceleration (g)')
+ax.set_ylim(-10, 10)
+ax.set_xlim(0, 30)
+
+my_line, = ax.plot([], [])
+
+# Updating the live plot
 def acc_animate(i, s_time, xs, ys):
 
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
@@ -32,43 +48,21 @@ def acc_animate(i, s_time, xs, ys):
 
     vertical_acc = float(acc_y) - 1
 
-    #print(vertical_acc)
-
     plot_time = float(round((time.time() - s_time), 1))
 
     linear_acc_list.append([plot_time, vertical_acc])
+    
     # Add x and y to lists
-
     xs.append(plot_time)
     ys.append(vertical_acc)
 
+    my_line.set_data(xs, ys)
 
-    max_time = int(max(xs)) if xs else 0
-    ax.set_xticks(range(0, max_time + 1, 5))
-
-    # Draw x and y lists
-    ax.clear()
-    ax.plot(xs, ys)
-    ax.set_ylim(-5, 5)
-
-    # Format plot
-    plt.xticks(rotation=45, ha='right')
-    plt.subplots_adjust(bottom=0.30)
-    plt.title('Jump Acceleration over Time')
-    plt.ylabel('Acceleration (g)')
-
-    if plot_time >= 10:
+    if plot_time >= 30:
         ani.event_source.stop()
         fig.savefig("graph.png")
         plt.close()
 
-
-# Create figure for plotting
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-xs = []
-ys = []
-result = ""
 
 # Receive and discard incoming data until the buffer is empty
 clear = 0
@@ -93,78 +87,20 @@ row_of_linear_acc_max = next(row for row in linear_acc_list if row[1] == linear_
 #Extract the 1st element of that row which corresponds to the time
 time_of_acc_max = row_of_linear_acc_max[0]
 
+#Get the user weight
+with open("C:/Users/moeez/Documents/repos/PeakPulse/config.txt", 'r') as file:
+    weight = file.read()
+
 #Peak Force----------------------------
 
-peak_force = linear_acc_max #* user_weight * 0.4535924
-
-#Energy--------------------------------
-
-# Initialize variables
-non_zero_acc = []
-extracted_rows = []
-looking_for_non_zero = True  # Start by looking for non-zero following a zero
-previous_was_zero = True  # Initialize as True to capture the first non-zero
-looking_for_non_zero2 = True  # Start by looking for non-zero following a zero
-previous_was_zero2 = True  # Initialize as True to capture the first non-zero
-
-for i, row in enumerate(linear_acc_list):
-    if looking_for_non_zero:
-        # If the previous was zero and the current is non-zero, switch the condition
-        if previous_was_zero and row[1] != 0:
-            non_zero_acc.append(row)
-            looking_for_non_zero = False  # Next, look for a zero
-    else:
-        # If the previous was non-zero and the current is zero, switch the condition
-        if not previous_was_zero and row[1] != 0:
-            non_zero_acc.append(row)
-        elif not previous_was_zero and row[1] ==0:
-            looking_for_non_zero = True # Next, look for a non-zero
-               
-    # Update the previous_was_zero based on the current row
-    previous_was_zero = (row[1] == 0)
-
-for i, row in enumerate(linear_acc_list):
-    if looking_for_non_zero2:
-        # If the previous was zero and the current is non-zero, switch the condition
-        if previous_was_zero2 and row[1] != 0:
-            extracted_rows.append(row)
-            looking_for_non_zero2 = False  # Next, look for a zero
-    else:
-        # If the previous was non-zero and the current is zero, switch the condition
-        if not previous_was_zero2 and row[1] == 0:
-            extracted_rows.append(row)
-            looking_for_non_zero2 = True  # Next, look for a non-zero
-    
-    # Update the previous_was_zero based on the current row
-    previous_was_zero2 = (row[1] == 0)
-
-#integration of extracted jumps
-
-non_zero_sum = sum(non_zero_acc[1])
-#integration of entire list
-all_integration = sum(linear_acc_list[1])
-
-#num_of_jumps calc is number of steps taken during the trial
-num_of_jumps = len(extracted_rows) / 2
-
-avg_energy_non_zero = non_zero_sum / num_of_jumps
-
-avg_energy_all_integration = all_integration / num_of_jumps
-
-print(f"You jumped {num_of_jumps} times")
-print(f"Integration of extracted jumps was {non_zero_sum}")
-print(f"Integration of whole graph was {all_integration}")
-print(f"Avg energy of extracted jumps was {avg_energy_non_zero}")
-print(f"Avg energy of whole graph was {avg_energy_all_integration}")
-
+peak_force = linear_acc_max * 9.81 * int(weight) * 0.4535924
+print(linear_acc_max)
+print(peak_force)
 
 #Write the data to a text file
 filename = "C:/Users/moeez/Documents/repos/PeakPulse/data.txt"
+ 
 with open(filename, "w") as file:
-        file.write("Number of Jumps: " + str(num_of_jumps) + "\n")
-        file.write("Integration of Jumps: " + str(non_zero_sum) + "\n")
-        file.write("Integration of graph: " + str(all_integration) + "\n")
-        file.write("Average energy of Jumps: " + str(avg_energy_non_zero) + "\n")
-        file.write("Average energy of graph: " + str(avg_energy_all_integration) + "\n")
-
-
+    # file.write("Number of Jumps: " + str(num_of_jumps) + "\n")
+    file.write("Peak Acceleration: " + str(linear_acc_max) + " Gs\n")
+    file.write("Peak Force: " + str(peak_force) + " N\n")

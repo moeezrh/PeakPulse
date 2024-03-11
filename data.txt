@@ -1,3 +1,2 @@
-Maximum Acceleration: 0.1044030650891055
-Cadence: 23.0
-Average Stride Time: 0.12608695652173924
+Peak Acceleration: 7.0 Gs
+Peak Force: 311.48190108 N
