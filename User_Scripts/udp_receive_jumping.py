@@ -81,7 +81,10 @@ plt.show()
 
 # maximum acceleration data
 # Filtering out values where the absolute value is less than 0.2
-filtered_acc = [value for value in linear_acc_list if abs(value) >= 0.2]
+filtered_acc = []
+for value in linear_acc_list:
+    if abs(value[1]) >= 0.2:
+        filtered_acc.append(value[1])
 
 # Print the filtered values
 print(filtered_acc)
