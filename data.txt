@@ -1,2 +1,2 @@
-Peak Acceleration: 7.0 Gs
-Peak Force: 311.48190108 N
+Peak Acceleration: 5.33 Gs
+Peak Force: 3557.5682844780004 N

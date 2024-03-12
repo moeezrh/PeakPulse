@@ -31,7 +31,7 @@ plt.subplots_adjust(bottom=0.30)
 plt.title('Jump Acceleration over Time')
 plt.ylabel('Acceleration (g)')
 ax.set_ylim(-10, 10)
-ax.set_xlim(0, 30)
+ax.set_xlim(0, 10)
 
 my_line, = ax.plot([], [])
 
@@ -58,7 +58,7 @@ def acc_animate(i, s_time, xs, ys):
 
     my_line.set_data(xs, ys)
 
-    if plot_time >= 30:
+    if plot_time >= 10:
         ani.event_source.stop()
         fig.savefig("graph.png")
         plt.close()
@@ -76,6 +76,8 @@ ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time,
 plt.show()
 
 #Max Acceleration----------------------
+#for vacc in linear_acc_list[1]:
+#    print(vacc)
 
 # maximum acceleration data
 linear_acc_values = [row[1] for row in linear_acc_list]

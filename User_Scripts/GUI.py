@@ -18,7 +18,7 @@ def jump_mpu6050():
     subprocess.run(["python", "User_Scripts/udp_receive_jumping.py"])
     running_output_page()
 
-def punching_mpu6050():
+def punch_mpu6050():
     subprocess.run(["python", "User_Scripts/udp_receive_punching.py"])
     running_output_page()
 
@@ -57,7 +57,7 @@ def running_output_page():
 root = tk.Tk()
 root.title("PeakPulse")
 # Set the window size to 400x300 pixels
-root.geometry("400x400")  
+root.geometry("400x500")  
 # configures background color
 root.configure(bg="#212121")
 
@@ -79,13 +79,14 @@ btn_punching = tk.Button(root, text="Punching", command=punch_mpu6050, font=Butt
 # Place the buttons on the window using pack
 btn_running.pack(pady=40)
 btn_jumping.pack(pady=10)
-btn_punching.pack(pady=10)
 
 # Create input field
 input_instruction = tk.Label(root, text="Enter your weight(lbs)", font=ButtonFont, bg="#212121", fg="white")
 input_instruction.pack(pady=10)  # Place the label on the window
 e = Entry(root)
 e.pack()
+
+btn_punching.pack(pady=40)
 
 # Start the GUI event loop
 root.mainloop()
