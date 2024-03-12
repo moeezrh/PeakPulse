@@ -60,7 +60,7 @@ def acc_animate(i, s_time, xs, ys):
 
     if plot_time >= 30:
         ani.event_source.stop()
-        fig.savefig("graph.png")
+        fig.savefig("graph.png")    
         plt.close()
 
 
@@ -78,8 +78,12 @@ plt.show()
 #Max Acceleration----------------------
 
 # maximum acceleration data
-linear_acc_values = [row[1] for row in linear_acc_list]
-linear_acc_max = max(linear_acc_values)
+# Filtering out values where the absolute value is less than 0.2
+filtered_acc = [value for value in linear_acc_list if abs(value) >= 0.2]
+
+# Print the filtered values
+print(filtered_acc)
+linear_acc_max = max(filtered_acc)
 
 # Extract the row where the 2nd element matches the linear_acc_max
 row_of_linear_acc_max = next(row for row in linear_acc_list if row[1] == linear_acc_max)
