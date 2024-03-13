@@ -35,7 +35,7 @@ def running_output_page():
     newWindow.geometry("800x800")
     newWindow.configure(bg="#212121")
     # A Label widget to show in toplevel
-    running_title = tk.Label(newWindow, text="Running Data Analysis", font=TitleFont, bg="#212121", fg="white")
+    running_title = tk.Label(newWindow, text="Data Analysis", font=TitleFont, bg="#212121", fg="white")
     running_title.pack(pady=10)
 
     # To show the image of plot
