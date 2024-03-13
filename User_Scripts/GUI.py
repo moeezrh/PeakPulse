@@ -19,6 +19,8 @@ def jump_mpu6050():
     running_output_page()
 
 def punch_mpu6050():
+    with open(filename, "w") as file:
+        file.write(str(e.get()))
     subprocess.run(["python", "User_Scripts/udp_receive_punching.py"])
     running_output_page()
 

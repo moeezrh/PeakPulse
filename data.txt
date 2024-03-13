@@ -1,2 +1,3 @@
-Peak Acceleration: 4.13 Gs
-Peak Force: 2756.6148245580002 N
+Maximum Acceleration: 9.56 Gs
+Maximum Impact Force  (N): 694.06 Ns
+Maximum Impact Force (lbf): 156.03 lbf
