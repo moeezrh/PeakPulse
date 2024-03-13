@@ -75,26 +75,28 @@ start_time = time.time()
 ani = animation.FuncAnimation(fig, acc_animate, frames = 40 , fargs=(start_time, xs, ys), interval=10)
 plt.show()
 
-#Max Acceleration----------------------
-#for vacc in linear_acc_list[1]:
-#    print(vacc)
 
 # maximum acceleration data
 # Filtering out values where the absolute value is less than 0.2
 filtered_acc = []
 for value in linear_acc_list:
-    if abs(value[1]) >= 0.2:
-        filtered_acc.append(value[1])
+    if abs(value[1]) >= 0.5:
+        filtered_acc.append([value[0], value[1]])
 
-# Print the filtered values
-print(filtered_acc)
-linear_acc_max = max(filtered_acc)
 
-# Extract the row where the 2nd element matches the linear_acc_max
-row_of_linear_acc_max = next(row for row in linear_acc_list if row[1] == linear_acc_max)
+linear_acc_max = 0
+for row in filtered_acc:
+    if row[1] > linear_acc_max:
+        linear_acc_max = row[1]
+        time_of_acc_max = row[0]
 
-#Extract the 1st element of that row which corresponds to the time
-time_of_acc_max = row_of_linear_acc_max[0]
+# Counts jumps by finding the point where the graph is negative, and then ignoring values within 1 second of that to avoid counting impacts
+total_jumps = 0
+cool_down = 0
+for row in filtered_acc:
+    if row[1] < 0 and row[0] > cool_down:
+        total_jumps += 1
+        cool_down = row[0] + 1
 
 #Get the user weight
 with open("C:/Users/moeez/Documents/repos/PeakPulse/config.txt", 'r') as file:
@@ -103,13 +105,14 @@ with open("C:/Users/moeez/Documents/repos/PeakPulse/config.txt", 'r') as file:
 #Peak Force----------------------------
 
 peak_force = linear_acc_max * 9.81 * int(weight) * 0.4535924
-print(linear_acc_max)
-print(peak_force)
+
+linear_acc_max = round(linear_acc_max, 2)
+peak_force = round(peak_force, 2)
 
 #Write the data to a text file
 filename = "C:/Users/moeez/Documents/repos/PeakPulse/data.txt"
  
 with open(filename, "w") as file:
-    # file.write("Number of Jumps: " + str(num_of_jumps) + "\n")
+    file.write("Number of Jumps: " + str(total_jumps) + "\n")
     file.write("Peak Acceleration: " + str(linear_acc_max) + " Gs\n")
     file.write("Peak Force: " + str(peak_force) + " N\n")
