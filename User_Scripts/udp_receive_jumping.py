@@ -3,6 +3,12 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
+import os
+
+current_dir = os.getcwd()
+#parent_dir = os.path.dirname(current_dir)
+
+
 
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
@@ -84,11 +90,9 @@ for value in linear_acc_list:
         filtered_acc.append([value[0], value[1]])
 
 
+
 linear_acc_max = 0
-for row in filtered_acc:
-    if row[1] > linear_acc_max:
-        linear_acc_max = row[1]
-        time_of_acc_max = row[0]
+
 
 # Counts jumps by finding the point where the graph is negative, and then ignoring values within 1 second of that to avoid counting impacts
 total_jumps = 0
@@ -97,9 +101,13 @@ for row in filtered_acc:
     if row[1] < 0 and row[0] > cool_down:
         total_jumps += 1
         cool_down = row[0] + 1
+    if row[1] > linear_acc_max and row[0] > cool_down:
+        linear_acc_max = row[1]
+        time_of_acc_max = row[0]
 
 #Get the user weight
-with open("C:/Users/moeez/Documents/repos/PeakPulse/config.txt", 'r') as file:
+config_file = os.path.join(current_dir, "config.txt")
+with open(config_file, 'r') as file:
     weight = file.read()
 
 #Peak Force----------------------------
@@ -110,9 +118,10 @@ linear_acc_max = round(linear_acc_max, 2)
 peak_force = round(peak_force, 2)
 
 #Write the data to a text file
-filename = "C:/Users/moeez/Documents/repos/PeakPulse/data.txt"
+
+data_file = os.path.join(current_dir, "data.txt")
  
-with open(filename, "w") as file:
+with open(data_file, "w") as file:
     file.write("Number of Jumps: " + str(total_jumps) + "\n")
     file.write("Peak Acceleration: " + str(linear_acc_max) + " Gs\n")
     file.write("Peak Force: " + str(peak_force) + " N\n")

@@ -4,8 +4,11 @@ from tkinter import *
 from tkinter.ttk import *
 from PIL import Image, ImageTk
 import subprocess
+import os
 
-filename = "C:/Users/moeez/Documents/repos/PeakPulse/config.txt"
+current_dir = os.getcwd()
+filename = os.path.join(current_dir, "config.txt")
+pathToImage = os.path.join(current_dir, "graph.png")
 
 #Using subprocess.run instead makes the page open once the process is finished
 def run_mpu6050():
@@ -39,7 +42,7 @@ def running_output_page():
     running_title.pack(pady=10)
 
     # To show the image of plot
-    pathToImage="C:/Users/moeez/Documents/repos/PeakPulse/graph.png"
+    pathToImage = os.path.join(current_dir, "graph.png")
     im = Image.open(pathToImage)
     ph = ImageTk.PhotoImage(im)
     running_image = tk.Label(newWindow, image=ph)
@@ -47,7 +50,8 @@ def running_output_page():
     running_image.pack(pady=10)
 
     #To show the data analysis
-    with open("C:/Users/moeez/Documents/repos/PeakPulse/data.txt", 'r') as file:
+    pathToData = os.path.join(current_dir, "data.txt")
+    with open(pathToData, 'r') as file:
         data = file.read()
     
     running_data = tk.Label(newWindow, text=data, font=TextFont, justify="left", bg="#212121", fg="white")
