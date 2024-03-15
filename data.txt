@@ -1,3 +1,3 @@
-Number of Jumps: 4
-Peak Acceleration: 4.16 Gs
-Peak Force: 2961.75 N
+Maximum Acceleration: 2.2049263026232873
+Cadence: 22.5
+Average Stride Time: 0.13181818181818175

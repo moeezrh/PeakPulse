@@ -4,6 +4,10 @@ from acc_functions import calc_linear_acc
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
+import os
+
+current_dir = os.getcwd()
+#parent_dir = os.path.dirname(current_dir)
 
 #Connecting to the RPI Wirelessly
 hostname = socket.gethostname()
@@ -112,9 +116,9 @@ lb_force = round(lb_force, 2)
 force = round(force, 2)
 
 
-#Write the data to a text file
-filename = "C:/Users/moeez/Documents/repos/PeakPulse/data.txt"
-with open(filename, "w") as file:
+data_file = os.path.join(current_dir, "data.txt")
+ 
+with open(data_file, "w") as file:
         file.write("Maximum Acceleration: " + str(linear_acc_max) + " Gs\n")
         file.write("Maximum Impact Force  (N): " + str(force) + " Ns\n")
         file.write("Maximum Impact Force (lbf): " + str(lb_force) + " lbf\n")
