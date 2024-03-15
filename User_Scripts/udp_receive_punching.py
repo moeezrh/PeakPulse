@@ -98,7 +98,8 @@ print(f"{linear_acc_max} is max acceleration at {time_of_acc_max} seconds")
 
 # Calculating human punch force
 # Get the user weight
-with open("C:/Users/moeez/Documents/repos/PeakPulse/config.txt", 'r') as file:
+config_file = os.path.join(current_dir, "config.txt")
+with open(config_file, 'r') as file:
     weight = file.read()
 
 if weight == "":

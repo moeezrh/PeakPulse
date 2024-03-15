@@ -9,6 +9,7 @@ import os
 current_dir = os.getcwd()
 filename = os.path.join(current_dir, "config.txt")
 pathToImage = os.path.join(current_dir, "graph.png")
+udp_jump_script = os.path.join(current_dir, "User_Scripts/udp_receive_jumping.py")
 
 #Using subprocess.run instead makes the page open once the process is finished
 def run_mpu6050():
